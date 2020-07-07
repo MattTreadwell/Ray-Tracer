@@ -48,7 +48,7 @@
 #define MODE_DISPLAY 1
 #define MODE_JPEG 2
 
-int mode = MODE_DISPLAY;
+int mode = MODE_JPEG;
 
 //you may want to make these smaller for debugging purposes
 #define WIDTH 640

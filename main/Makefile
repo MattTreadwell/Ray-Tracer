@@ -18,13 +18,13 @@ UNAME_S=$(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
   PLATFORM=Linux
-  INCLUDE=-I../external/glm/ -I../external/imageIO -fopenmp
-  LIB=-lGLEW -lGL -lglut -ljpeg -fopenmp
+  INCLUDE=-I../external/imageIO -fopenmp
+  LIB=-ljpeg -fopenmp
   LDFLAGS=
 else
   PLATFORM=Mac OS
-  INCLUDE=-I../external/glm/ -I../external/imageIO -I../external/jpeg-9a-mac/include -fopenmp
-  LIB=-framework OpenGL -framework GLUT ../external/jpeg-9a-mac/lib/libjpeg.a -fopenmp
+  INCLUDE=-I../external/imageIO -I../external/jpeg-9a-mac/include -fopenmp
+  LIB=../external/jpeg-9a-mac/lib/libjpeg.a -fopenmp
   CXXFLAGS+= -Wno-deprecated-declarations
   LDFLAGS=-Wl,-w
 endif

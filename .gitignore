@@ -1,0 +1,4 @@
+*.swp
+*.o
+main/*.jpg
+.idea

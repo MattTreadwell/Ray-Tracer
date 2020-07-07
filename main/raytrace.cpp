@@ -1,6 +1,6 @@
 /* **************************
- * Parallel Raytracer
- * (CSCI 420 hw3)
+ * CSCI 420
+ * Assignment 3 Raytracer
  * Name: Matthew Treadwell
  * *************************
 */
@@ -290,8 +290,6 @@ void draw_scene() {
     #pragma omp parallel for
     for (unsigned int x = 0; x < WIDTH; x++) {
         double deg;
-        glPointSize(2.0);
-        glBegin(GL_POINTS);
         for (unsigned int y = 0; y < HEIGHT; y++) {
             /**** For each pixel x,y ****/
             // https://en.wikipedia.org/wiki/Supersampling
@@ -305,8 +303,6 @@ void draw_scene() {
 
             plot_pixel(x, y, anti_aliased.r*255.0, anti_aliased.g*255.0, anti_aliased.b*255.0);
         }
-        glEnd();
-        glFlush();
     }
     printf("Done!\n");
 
@@ -314,13 +310,8 @@ void draw_scene() {
 }
 
 /*
- * Provided functions
+ * Provided functions (modified for server use)
  */
-
-void plot_pixel_display(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
-    glColor3f(((float) r) / 255.0f, ((float) g) / 255.0f, ((float) b) / 255.0f);
-    glVertex2i(x, y);
-}
 
 void plot_pixel_jpeg(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
     buffer[y][x][0] = r;
@@ -329,9 +320,8 @@ void plot_pixel_jpeg(int x, int y, unsigned char r, unsigned char g, unsigned ch
 }
 
 void plot_pixel(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
-    plot_pixel_display(x, y, r, g, b);
-    if (mode == MODE_JPEG)
-        plot_pixel_jpeg(x, y, r, g, b);
+    // Only plot jpeg for server compatibility
+    plot_pixel_jpeg(x, y, r, g, b);
 }
 
 void save_jpg() {
@@ -439,61 +429,25 @@ int loadScene(char *argv) {
     return 0;
 }
 
-void display() {
-}
-
-void init() {
-    glMatrixMode(GL_PROJECTION);
-    glOrtho(0, WIDTH, 0, HEIGHT, 1, -1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void idle() {
-    //hack to make it only draw once
-    static int once = 0;
-    if (!once) {
-        draw_scene();
-        if (mode == MODE_JPEG)
-            save_jpg();
-    }
-    once = 1;
-    // End for timing purposes
-    exit(0);
-}
-
 /*
  * Main function, modify if extra args are needed
  */
 
 int main(int argc, char **argv) {
-    if ((argc < 2) || (argc > 3)) {
-        printf("Usage: %s <input scenefile> [output jpegname]\n", argv[0]);
+    if (argc != 3) {
+        printf("Usage: %s <input scenefile> <output jpegname>\n", argv[0]);
         exit(0);
     }
-    if (argc == 3) {
-        mode = MODE_JPEG;
-        filename = argv[2];
-    } else if (argc == 2)
-        mode = MODE_DISPLAY;
 
-    glutInit(&argc, argv);
+    // Output image file
+    filename = argv[2];
+
+    // Load in abstract data to be rendered
     loadScene(argv[1]);
 
-    glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE);
-    glutInitWindowPosition(0, 0);
-    glutInitWindowSize(WIDTH, HEIGHT);
-    int window = glutCreateWindow("Ray Tracer");
-#ifdef __APPLE__
-    // This is needed on recent Mac OS X versions to correctly display the window.
-    glutReshapeWindow(WIDTH - 1, HEIGHT - 1);
-#endif
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
-    init();
-    glutMainLoop();
+    // Draw the scene to global array
+    draw_scene();
+    // Save as a jpeg
+    save_jpg();
 }
 
