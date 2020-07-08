@@ -1,4 +1,7 @@
 *.swp
 *.o
-main/*.jpg
 .idea
+cmake-build-debug
+raytrace
+*.jpg
+*.png
