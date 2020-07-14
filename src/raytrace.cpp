@@ -436,13 +436,18 @@ int loadScene(char *argv) {
  */
 
 int main(int argc, char **argv) {
+    int node;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &node);
+
     if (argc != 3) {
         printf("Usage: %s <input scenefile> <output jpegname>\n", argv[0]);
         exit(0);
     }
 
     // Output image file
-    filename = argv[2];
+    std::string filenametmp = std::string(argv[2]) + std::to_string(node);
+    filename = const_cast<char *>(filenametmp.c_str());
 
     // Load in abstract data to be rendered
     loadScene(argv[1]);
@@ -451,5 +456,7 @@ int main(int argc, char **argv) {
     draw_scene();
     // Save as a jpeg
     save_jpg();
+
+    MPI_Finalize();
 }
 

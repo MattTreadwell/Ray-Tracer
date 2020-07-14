@@ -20,6 +20,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         imageIO
         jpeg
         png
+        MPI::MPI_CXX
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
         lib/imageIO
