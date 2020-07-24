@@ -16,7 +16,6 @@
 #include <limits>
 #include <stdexcept>
 #include <omp.h>
-#include <mpi.h>
 #include <imageIO.h>
 
 /*
