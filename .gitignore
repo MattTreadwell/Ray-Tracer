@@ -1,0 +1,12 @@
+*.swp
+*.o
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+cmake-build-debug
+raytrace
+*.jpg
+*.png
+Release
+
+!assets/previews/*.jpg
+!assets/previews/*.png
