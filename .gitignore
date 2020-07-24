@@ -1,6 +1,7 @@
 *.swp
 *.o
-.idea
+**/.idea/workspace.xml
+**/.idea/tasks.xml
 cmake-build-debug
 raytrace
 *.jpg
