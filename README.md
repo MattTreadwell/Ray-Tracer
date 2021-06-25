@@ -40,11 +40,6 @@ make
 ./RayTrace ../assets/scenes/spheres.scene output.jpg
 ```
 
-## Migration to MPI & SIMD
-
-Currently, I'm implementing MPI and SIMD instructions in the `mpi-testing` branch.
-This will allow for high performance, vertical scaling on compute clusters.
-
 ## Previews
 
 #### Spheres
@@ -55,8 +50,3 @@ This will allow for high performance, vertical scaling on compute clusters.
 
 #### Table
 ![Table](assets/previews/table.jpg)
-
-
-
-
-
